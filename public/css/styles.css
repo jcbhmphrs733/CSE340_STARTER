@@ -1,14 +1,10 @@
 :root {
   --color-bg: #fafcfe;           /* very light white/gray */
   --color-bg-alt: #e6eef5;       /* soft sky blue tint */
-  --color-primary: #539dc4;      /* sky blue */
-  --color-primary-dark: #25618a; /* deeper blue */
-  --color-accent: #69add2;       /* lighter sky blue */
+  --color-primary: #24719b;      /* sky blue */
+  --color-primary-dark: #104060; /* deeper blue */
+  --color-accent: #7ccceb;       /* lighter sky blue */
   --color-black: #181818;        /* rich black */
-  --color-black-soft: #222831;   /* soft black/charcoal */
-  --color-white: #ffffff;        /* pure white */
-  --color-white-soft: #f4f8fb;   /* soft white */
-  --color-border: #c9d6e3;       /* light blue-gray border */
 }
 
 /* Mobile-first default styles */
@@ -152,14 +148,13 @@ nav ul li a {
   margin-top: auto;
   padding: 0.75rem 2rem;
   background: var(--color-primary);
-  color: var(--color-white);
+  color: var(--color-bg);
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  transition: background 0.2s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
