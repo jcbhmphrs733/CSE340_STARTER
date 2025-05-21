@@ -1,9 +1,29 @@
-// Why do I exist? 🤔
-async function getNav() {
-  return;
-}
+const invModel = require("../models/inventory-model");
+const Util = {};
 
-
+/* ************************
+ * Constructs the nav HTML unordered list
+ ************************** */
+Util.getNav = async function (req, res, next) {
+  let data = await invModel.getClassifications();
+//   console.log(data.rows);
+  let list = "<ul>";
+  list += '<li><a href="/" title="Home page">Home</a></li>';
+  data.rows.forEach((row) => {
+    list += "<li>";
+    list +=
+      '<a href="/inv/type/' +
+      row.classification_id +
+      '" title="See our inventory of ' +
+      row.classification_name +
+      ' vehicles">' +
+      row.classification_name +
+      "</a>";
+    list += "</li>";
+  });
+  list += "</ul>";
+  return list;
+};
 
 /* ****************************************
  * Middleware For Handling Errors
@@ -12,14 +32,7 @@ async function getNav() {
  **************************************** */
 
 //Why am I a bad function? 😭
-// Util.handleErrors = (fn) => (req, res, next) =>
-//   Promise.resolve(fn(req, res, next)).catch(next);
+Util.handleErrors = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
 
-//temporary fix for the bad function above
-const handleErrors = (fn) => (req, res, next) =>
-    Promise.resolve(fn(req, res, next)).catch(next);
-
-module.exports = {
-  handleErrors,
-  getNav,
-};
+module.exports = Util;

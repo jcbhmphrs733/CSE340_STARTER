@@ -4,8 +4,9 @@
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const utilities = require("./utilities")
-const env = require("dotenv").config()
 const app = express()
+const baseController = require("./controllers/baseController")
+// const env = require("dotenv").config()
 // const static = require("./routes/static")
 
 
@@ -24,7 +25,7 @@ app.use(express.static("public"))
 app.use(require("./routes/static"))
 
 //Index route 
-utilities.handleErrors(app.get("/", (req, res) => {res.render("index", {title: "Home"})}));
+app.get("/", utilities.handleErrors(baseController.buildHome));
 app.get("/help", (req, res) => {res.render("index", {title: "Home"})});
 app.get("/custom", (req, res) => {res.render("index", {title: "Home"})});
 //last route 404
