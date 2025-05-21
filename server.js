@@ -3,9 +3,11 @@
  *************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
+const utilities = require("./utilities")
 const env = require("dotenv").config()
 const app = express()
 // const static = require("./routes/static")
+
 
 /***********************
   * View Engine and Templates
@@ -13,18 +15,38 @@ const app = express()
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "layouts/layout")
-// app.use(express.static("public"))
-
+app.use(express.static("public"))
 
 
 /* ***********************
  * Routes
  *************************/
 app.use(require("./routes/static"))
-//Index route
-app.get("/", (req, res) => {
-  res.render("index", {title: "Home"})
-})
+
+//Index route 
+utilities.handleErrors(app.get("/", (req, res) => {res.render("index", {title: "Home"})}));
+app.get("/help", (req, res) => {res.render("index", {title: "Home"})});
+app.get("/custom", (req, res) => {res.render("index", {title: "Home"})});
+//last route 404
+app.use(async (req, res, next) => {
+  next({ status: 404, message: "Page Not Found" });
+});
+
+
+/* ***********************
+* Express Error Handler
+* Place after all other middleware
+*************************/
+app.use(async (err, req, res, next) => {
+  let nav = await utilities.getNav();
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message: err.message,
+    nav
+  });
+});
+
 
 /* ***********************
  * Local Server Information
@@ -33,9 +55,13 @@ app.get("/", (req, res) => {
 const port = process.env.PORT
 const host = process.env.HOST
 
+
+
 /* ***********************
  * Log statement to confirm server operation
  *************************/
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
+
+
