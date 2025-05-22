@@ -69,6 +69,7 @@ header#top-header a {
 nav {
   background: black;
   padding: 10px 0;
+  border-radius: .75rem;
 }
 
 nav ul {
@@ -76,10 +77,9 @@ nav ul {
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
 }
 
 nav ul li {
@@ -93,13 +93,35 @@ nav ul li {
 
 nav ul li a {
   display: block;
-  width: 100%;
-  text-align: center;
   color: var(--color-bg);
   text-decoration: none;
   padding: 0.75rem 1rem;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
+}
+
+#inv-display {
+  margin: 50px, 0, 50px, 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-auto-flow: row;
+  min-height: auto;
+  gap: 1rem;
+  align-items: start;
+  justify-items: center;
+}
+
+#inv-display li {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  list-style: none;
+  background: var(--color-bg-alt);
+  border-radius: 16px;
+  border-color: var(--color-primary);
+  padding: 1rem;
+  margin: 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .hero-container {

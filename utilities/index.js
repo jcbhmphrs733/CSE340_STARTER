@@ -84,7 +84,6 @@ Util.buildClassificationGrid = async function (data) {
  * General Error Handling
  **************************************** */
 
-//Why am I a bad function? 😭
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
