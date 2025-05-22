@@ -6,6 +6,7 @@ const expressLayouts = require("express-ejs-layouts")
 const utilities = require("./utilities")
 const app = express()
 const baseController = require("./controllers/baseController")
+const inventoryRoute = require("./routes/inventoryRoute")
 // const env = require("dotenv").config()
 // const static = require("./routes/static")
 
@@ -26,6 +27,7 @@ app.use(require("./routes/static"))
 
 //Index route 
 app.get("/", utilities.handleErrors(baseController.buildHome));
+app.use("/inv", inventoryRoute)
 app.get("/help", (req, res) => {res.render("index", {title: "Home"})});
 app.get("/custom", (req, res) => {res.render("index", {title: "Home"})});
 //last route 404
