@@ -182,6 +182,45 @@ nav ul li a {
   background: var(--color-primary-dark);
 }
 
+#vehicle-details {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  padding: 1rem;
+  color: var(--color-primary-dark);
+  /* background: var(--color-primary); */
+  /* border-radius: 16px; */
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.08); */
+}
+
+.vehicleImage {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  /* min-width: 200px;
+  max-width: 400px;
+  min-height: 200px;
+  max-height: 400px; */
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  /* box-shadow: inset 0 -2px rgba(0,0,0,0.1); */
+}
+
+#mainImage {
+  /* margin: 20px; */
+  flex: 1;
+  max-width: 100%;
+  border: var(--color-primary-dark) solid 5px;
+  border-radius: 10px;
+  max-height: 75%;
+  max-width: 75%;
+  width: 100%;
+  height: 100%;
+}
+
 #content {
   display: flex;
   flex-direction: column;
