@@ -18,7 +18,6 @@ invCont.buildByClassificationId = async function (req, res, next) {
     grid,
   })
 }
- 
 
 /* ***************************
  *  Build vehicle detail view
@@ -38,6 +37,5 @@ invCont.buildDetail = async function (req, res, next) {
     htmlData,
   })
 }
- 
  
 module.exports = invCont

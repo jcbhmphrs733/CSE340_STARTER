@@ -16,6 +16,8 @@ Delete from account where account_id = 1;
 -- SELECT * FROM inventory WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 
 UPDATE inventory SET inv_description = Replace(inv_description, 'small interiors', 'a huge interior') WHERE inv_make = 'GM' AND inv_model = 'Hummer';
+UPDATE inventory SET inv_description = Replace(inv_description, 'is the ar', 'is the car') WHERE inv_make = 'Chevy' AND inv_model = 'Camaro';
+
 
 -- SELECT * FROM inventory WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 
