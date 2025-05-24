@@ -30,6 +30,7 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute)
 app.get("/help", (req, res) => {res.render("index", {title: "Home"})});
 app.get("/custom", (req, res) => {res.render("index", {title: "Home"})});
+app.get("/error", utilities.handleErrors(baseController.throwError));
 //last route 404
 app.use(async (req, res, next) => {
   next({ status: 404, message: "Page Not Found" });
@@ -50,7 +51,6 @@ app.use(async (err, req, res, next) => {
     nav
   })
 })
-
 
 /* ***********************
  * Local Server Information

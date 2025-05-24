@@ -98,9 +98,9 @@ Util.buildClassificationGrid = async function (data) {
  * Assignment 3, Task 1
  **************************************** */
 Util.buildSingleVehicleDisplay = async (vehicle) => {
-  let v_detail_string = '<section id="vehicle-display">';
+  let v_detail_string = '<div id="vehicle-display">';
   v_detail_string += "<div>";
-  v_detail_string += '<section class="vehicleImage">';
+  v_detail_string += '<div class="vehicleImage">';
   v_detail_string +=
     "<img src='" +
     vehicle.inv_image +
@@ -109,8 +109,8 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
     " " +
     vehicle.inv_model +
     " on cse motors' id='mainImage'>";
-  v_detail_string += "</section>";
-  v_detail_string += '<section class="vehicleDetail">';
+  v_detail_string += "</div>";
+  v_detail_string += '<div class="vehicleDetail">';
   v_detail_string +=
     "<h2> " + vehicle.inv_make + " " + vehicle.inv_model + " Details</h2>";
   v_detail_string += '<ul id="vehicle-details">';
@@ -126,9 +126,9 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
     new Intl.NumberFormat("en-US").format(vehicle.inv_miles) +
     "</li>";
   v_detail_string += "</ul>";
-  v_detail_string += "</section>";
   v_detail_string += "</div>";
-  v_detail_string += "</section>";
+  v_detail_string += "</div>";
+  v_detail_string += "</div>";
   return v_detail_string;
 };
 
