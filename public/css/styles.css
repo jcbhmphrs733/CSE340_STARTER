@@ -207,6 +207,38 @@ nav ul li a {
   /* box-shadow: inset 0 -2px rgba(0,0,0,0.1); */
 }
 
+.notice {
+  list-style: none;
+  background: orangered;
+  color: white;
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+  border: #104060 solid 4px;
+  background-color: var(--color-accent);
+  padding: 1rem;  
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+}
+
 #mainImage {
   /* margin: 20px; */
   flex: 1;
@@ -259,6 +291,11 @@ nav ul li a {
     padding: 20px;
     border-radius: 20px;
     border-width: 5px;
+  }
+
+  form {
+    width: 50%;
+    margin: 0 auto;
   }
   header#top-header {
     flex-direction: row;

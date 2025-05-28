@@ -1,19 +1,41 @@
 /* ***********************
- * Require Statements
- *************************/
+* Require Statements
+*************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
-const utilities = require("./utilities")
+const session = require("express-session")
+const pool = require('./database/')
 const app = express()
 const baseController = require("./controllers/baseController")
-const inventoryRoute = require("./routes/inventoryRoute")
-// const env = require("dotenv").config()
-// const static = require("./routes/static")
+const utilities = require("./utilities")
+
+
+
+/* ***********************
+* Middleware
+* ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+app.use(require('connect-flash')())
+app.use(function(req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 
 /***********************
-  * View Engine and Templates
-  *************************/
+ * View Engine and Templates
+*************************/
+
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "layouts/layout")
@@ -21,16 +43,17 @@ app.use(express.static("public"))
 
 
 /* ***********************
- * Routes
- *************************/
+* Routes
+*************************/
+
 app.use(require("./routes/static"))
+app.use("/account", require("./routes/accountRoute"))
+app.use("/inv", require("./routes/inventoryRoute"))
 
 //Index route 
 app.get("/", utilities.handleErrors(baseController.buildHome));
-app.use("/inv", inventoryRoute)
-app.get("/help", (req, res) => {res.render("index", {title: "Home"})});
-app.get("/custom", (req, res) => {res.render("index", {title: "Home"})});
 app.get("/error", utilities.handleErrors(baseController.throwError));
+
 //last route 404
 app.use(async (req, res, next) => {
   next({ status: 404, message: "Page Not Found" });
@@ -52,6 +75,8 @@ app.use(async (err, req, res, next) => {
   })
 })
 
+
+
 /* ***********************
  * Local Server Information
  * Values from .env (environment) file
@@ -60,12 +85,11 @@ const port = process.env.PORT
 const host = process.env.HOST
 
 
-
 /* ***********************
  * Log statement to confirm server operation
  *************************/
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
+  console.log(`app listening on http://${host}:${port}`)
 })
 
 
