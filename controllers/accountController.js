@@ -8,6 +8,7 @@ async function buildLogin(req, res) {
     title: "Login",
     nav,
     // messages: req.flash("notice"),
+    errors: null,
   });
 }
 
@@ -17,6 +18,7 @@ async function buildRegister(req, res) {
     title: "Register",
     nav,
     // messages: req.flash("notice"),
+    errors: null,
   });
 }
 
@@ -49,8 +51,30 @@ async function registerAccount(req, res) {
   }
 }
 
+async function loginAccount(req, res) {
+  let nav = await utilities.getNav();
+  const { account_email, account_password } = req.body;
+
+  // Here you would typically check the credentials against the database
+  // For now, we will just simulate a successful login
+  if (account_email && account_password) {
+    req.flash("notice", `Login successful. Welcome back ${account_email}!`);
+    res.status(200).redirect("/");
+  } else {
+    req.flash("notice", "Login failed. Please check your credentials.");
+    res.status(401).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+    });
+  }
+}
+
+
+
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
+  loginAccount,
 };

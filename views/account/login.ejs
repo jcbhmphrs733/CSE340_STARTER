@@ -4,7 +4,13 @@
   <form action="/account/login" method="post" id="loginForm">
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="email" id="email" name="account_email" required />
+      <input
+        type="email"
+        id="email"
+        name="account_email"
+        required
+        value="<%= locals.account_email %>"
+      />
     </div>
     <br />
     <div class="form-group">
@@ -17,6 +23,7 @@
         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
       />
     </div>
+    <br />
     <label>
       <input type="checkbox" id="showPassword" onclick="togglePassword()" />
       Show password

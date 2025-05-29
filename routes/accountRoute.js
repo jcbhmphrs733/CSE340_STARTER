@@ -1,11 +1,23 @@
-const express = require('express');
-const accountController = require('../controllers/accountController');
-const utilities = require('../utilities');
+const express = require("express");
+const accountController = require("../controllers/accountController");
+const utilities = require("../utilities");
 const router = express.Router();
+const validate = require("../utilities/account-validation");
 
-router.get('/login', utilities.handleErrors(accountController.buildLogin));
-router.get('/register', utilities.handleErrors(accountController.buildRegister));
-router.post('/register', utilities.handleErrors(accountController.registerAccount));
+router.get("/login", utilities.handleErrors(accountController.buildLogin));
+router.get(
+  "/register",
+  utilities.handleErrors(accountController.buildRegister)
+);
+// Process the registration data
+router.post(
+  "/register",
+  validate.registrationRules(),
+  validate.checkRegData,
+  utilities.handleErrors(accountController.registerAccount)
+);
 
+// Process the login attempt
+router.post("/login", validate.loginRules(), validate.checkLoginData, utilities.handleErrors(accountController.loginAccount));
 
 module.exports = router;
