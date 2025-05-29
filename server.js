@@ -5,6 +5,7 @@ const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const session = require("express-session")
 const pool = require('./database/')
+const bodyParser = require("body-parser")
 const app = express()
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities")
@@ -30,6 +31,9 @@ app.use(function(req, res, next) {
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 
 /***********************

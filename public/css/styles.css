@@ -225,6 +225,13 @@ nav ul li a {
   padding: 1rem;
 }
 
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 form {
   width: 50%;
   margin: 0 auto;
@@ -234,9 +241,24 @@ form {
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.form-group {
+  max-width: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* keeps input centered in the form */
+}
+
+.form-group label {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 0.25rem;
 }
 
 #mainImage {

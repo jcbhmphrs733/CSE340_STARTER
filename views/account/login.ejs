@@ -1,52 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-  <body>
-    <main>
-      <h1><%= title %></h1>
-      <%- messages() %>
-      <div class="content">
-        <form action="/account/login" method="post" id="loginForm">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="account_email" required />
-
-          <label for="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="account_password"
-            required
-          />
-
-          <div id="password-requirements">
-            <p>
-              <!-- Passwords must be minimum of 12 characters and include 1 capital -->
-              <!-- letter, 1 number and 1 special character. -->
-            </p>
-          </div>
-
-          <label>
-            <input
-              type="checkbox"
-              id="showPassword"
-              onclick="togglePassword()"
-            />
-            Show Password
-          </label>
-          <br />
-          <button type="submit">Login</button>
-        </form>
-        <div style="margin-top: 1rem">
-          <span>No account? </span>
-          <a href="/account/register">Sign up</a>
-        </div>
-      </div>
-      <script>
-        function togglePassword() {
-          const pwd = document.getElementById("password");
-          const show = document.getElementById("showPassword").checked;
-          pwd.type = show ? "text" : "password";
-        }
-      </script>
-    </main>
-  </body>
-</html>
+<h1><%= title %></h1>
+<%- messages() %>
+<div class="content">
+  <form action="/account/login" method="post" id="loginForm">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="account_email" required />
+    </div>
+    <br />
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="account_password"
+        required
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+      />
+    </div>
+    <label>
+      <input type="checkbox" id="showPassword" onclick="togglePassword()" />
+      Show password
+    </label>
+    <br />
+    <button type="submit">Login</button>
+  </form>
+  <div style="margin-top: 1rem">
+    <span>No account? </span>
+    <a href="/account/register">Sign up</a>
+  </div>
+</div>
+<script>
+  function togglePassword() {
+    const pwd = document.getElementById("password");
+    const show = document.getElementById("showPassword").checked;
+    pwd.type = show ? "text" : "password";
+  }
+</script>
