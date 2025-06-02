@@ -1,10 +1,10 @@
 :root {
-  --color-bg: #ffffff;           /* very light white/gray */
-  --color-bg-alt: #e6eef5;       /* soft sky blue tint */
-  --color-primary: #24719b;      /* sky blue */
+  --color-bg: #ffffff; /* very light white/gray */
+  --color-bg-alt: #e6eef5; /* soft sky blue tint */
+  --color-primary: #24719b; /* sky blue */
   --color-primary-dark: #104060; /* deeper blue */
-  --color-accent: #7ccceb;       /* lighter sky blue */
-  --color-black: #181818;        /* rich black */
+  --color-accent: #7ccceb; /* lighter sky blue */
+  --color-black: #181818; /* rich black */
 }
 
 /* Mobile-first default styles */
@@ -16,7 +16,7 @@
 }
 
 body {
-  background-image: url('/images/site/small_check.jpg');
+  background-image: url("/images/site/small_check.jpg");
   background-repeat: repeat;
   font-size: 1rem;
 }
@@ -66,10 +66,17 @@ header#top-header a {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.manage-inventory li {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-primary-dark);
+  list-style: none;
+  padding: 0.5rem;
+}
+
 nav {
   background: black;
   padding: 10px 0;
-  border-radius: .75rem;
+  border-radius: 0.75rem;
 }
 
 nav ul {
@@ -119,30 +126,30 @@ nav ul li a {
   border-color: var(--color-primary);
   padding: 1rem;
   margin: 0.5rem 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .hero-container {
   display: flex;
   min-height: 350px;
   width: 100%;
-  background: url('/images/vehicles/delorean.jpg') no-repeat center center;
+  background: url("/images/vehicles/delorean.jpg") no-repeat center center;
   border-radius: 16px;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
 .hero-sidebar {
-  background: rgba(255,255,255,0.82);
+  background: rgba(255, 255, 255, 0.82);
   min-width: 260px;
   max-width: 320px;
-  padding: .8rem 1.5rem;
+  padding: 0.8rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-radius: 16px 0 0 16px;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
 }
 
 .hero-title {
@@ -159,7 +166,7 @@ nav ul li a {
   font-size: 1.1rem;
   color: var(--color-black-soft);
   margin: 0;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 
 .hero-btn {
@@ -174,7 +181,7 @@ nav ul li a {
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .hero-btn:hover {
@@ -191,6 +198,30 @@ nav ul li a {
   /* background: var(--color-primary); */
   /* border-radius: 16px; */
   /* box-shadow: 0 2px 8px rgba(0,0,0,0.08); */
+}
+
+#inv_description {
+  min-height: 100px;
+  width: 100%;
+  resize: both; /* allows user to resize */
+}
+
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 400px; /* or your preferred width */
+}
+
+input.valid {
+  border: 2px solid green;
+  background-color: #d4ffd4; /* light green */
+}
+input.invalid {
+  border: 2px solid red;
+  background-color: #ffd4d4; /* light red */
 }
 
 .vehicleImage {
@@ -213,7 +244,7 @@ nav ul li a {
   color: white;
   padding: 1rem;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin-bottom: 1rem;
 }
 
@@ -237,7 +268,7 @@ form {
   margin: 0 auto;
   border: #104060 solid 4px;
   background-color: var(--color-accent);
-  padding: 1rem;  
+  padding: 1rem;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -294,7 +325,7 @@ form {
   background: var(--color-accent);
   border-radius: 16px;
   padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 #reviews {
@@ -358,7 +389,6 @@ form {
   #reviews {
     align-self: flex-start;
   }
-
 }
 
 @media (max-width: 480px) {
