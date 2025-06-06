@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model");
-
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const Util = {};
 
 /* ************************
@@ -141,8 +142,9 @@ Util.buildSingleVehicleDisplay = async (vehicle) => {
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-
-
+/* ****************************************
+ * Builds the classification list HTML
+ * **************************************** */
 Util.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications();
   let classificationList =
@@ -160,6 +162,31 @@ Util.buildClassificationList = async function (classification_id = null) {
   });
   classificationList += "</select>";
   return classificationList;
+};
+
+/* ****************************************
+ * Check JWT Token Middleware
+ * Checks if the JWT token is valid
+ **************************************** */
+Util.CheckJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("notice", "Please log in to continue.");
+          res.clearCookie("jwt");
+          return res.redirect("/account/login");
+        }
+        res.locals.accountData = accountData;
+        res.locals.loggedIn = 1;
+        next();
+      }
+    );
+  } else {
+    next();
+  }
 };
 
 module.exports = Util;

@@ -4,6 +4,8 @@ const utilities = require("../utilities");
 const router = express.Router();
 const validate = require("../utilities/account-validation");
 
+router.get("/", utilities.handleErrors(accountController.buildAccountManagement));
+
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get(
   "/register",
@@ -18,6 +20,11 @@ router.post(
 );
 
 // Process the login attempt
-router.post("/login", validate.loginRules(), validate.checkLoginData, utilities.handleErrors(accountController.loginAccount));
+router.post(
+  "/login",
+  validate.loginRules(),
+  validate.checkLoginData,
+  utilities.handleErrors(accountController.loginAccount)
+);
 
 module.exports = router;

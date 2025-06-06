@@ -1,6 +1,9 @@
 // const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/");
 const accountModel = require("../models/account-model");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 async function buildLogin(req, res) {
   let nav = await utilities.getNav();
@@ -30,12 +33,12 @@ async function registerAccount(req, res) {
     account_email,
     account_password,
   } = req.body;
-
+  const hashedPassword = await bcrypt.hash(account_password, 10);
   const regResult = await accountModel.registerAccount(
     account_firstname,
     account_lastname,
     account_email,
-    account_password
+    hashedPassword
   );
 
   if (regResult) {
@@ -54,27 +57,64 @@ async function registerAccount(req, res) {
 async function loginAccount(req, res) {
   let nav = await utilities.getNav();
   const { account_email, account_password } = req.body;
-
-  // Here you would typically check the credentials against the database
-  // For now, we will just simulate a successful login
-  if (account_email && account_password) {
-    req.flash("notice", `Login successful. Welcome back ${account_email}!`);
-    res.status(200).redirect("/");
-  } else {
+  const accountData = await accountModel.getAccountByEmail(account_email);
+  if (!accountData) {
     req.flash("notice", "Login failed. Please check your credentials.");
     res.status(401).render("account/login", {
       title: "Login",
       nav,
       errors: null,
+      account_email,
     });
+    return;
+  }
+  console.log("DB password:", accountData.account_password);
+  console.log("Input password:", account_password);
+
+  try {
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      // Password matches, create JWT token
+      delete accountData.account_password; // Remove password from accountData
+      const accessToken = jwt.sign(
+        accountData,
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: 3600 * 1000 }
+      );
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 }); // Set JWT in cookie
+      req.flash("notice", `Login successful. Welcome back ${account_email}!`);
+      return res.status(200).redirect("/account/");
+    } else {
+      req.flash("notice", "Login failed. Please check your credentials.");
+      return res.status(401).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      });
+    }
+  } catch (error) {
+    return new Error("access denied");
   }
 }
 
-
+async function buildAccountManagement(req, res) {
+  let nav = await utilities.getNav();
+  if (!res.locals.loggedIn) {
+    req.flash("notice", "Please log in to access your account.");
+    return res.redirect("/account/login");
+  }
+  res.render("account/account-management", {
+    title: "Account Management",
+    nav,
+    accountData: res.locals.accountData,
+    errors: null,
+  });
+}
 
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   loginAccount,
+  buildAccountManagement,
 };
