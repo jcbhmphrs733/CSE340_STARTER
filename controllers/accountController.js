@@ -7,12 +7,16 @@ require("dotenv").config();
 
 async function buildLogin(req, res) {
   let nav = await utilities.getNav();
-  res.render("account/login", {
-    title: "Login",
-    nav,
-    // messages: req.flash("notice"),
-    errors: null,
-  });
+  if (res.locals.loggedIn) {
+    return res.redirect("/account/");
+  } else {
+    res.render("account/login", {
+      title: "Login",
+      nav,
+      // messages: req.flash("notice"),
+      errors: null,
+    });
+  }
 }
 
 async function buildRegister(req, res) {
@@ -68,9 +72,6 @@ async function loginAccount(req, res) {
     });
     return;
   }
-  console.log("DB password:", accountData.account_password);
-  console.log("Input password:", account_password);
-
   try {
     if (await bcrypt.compare(account_password, accountData.account_password)) {
       // Password matches, create JWT token
@@ -89,12 +90,18 @@ async function loginAccount(req, res) {
         title: "Login",
         nav,
         errors: null,
-        account_email,
+        account_email: account_email,
       });
     }
   } catch (error) {
     return new Error("access denied");
   }
+}
+
+async function logoutAccount(req, res) {
+  res.clearCookie("jwt"); // Clear the JWT cookie
+  req.flash("notice", "You have been logged out successfully.");
+  return res.redirect("/");
 }
 
 async function buildAccountManagement(req, res) {
@@ -108,6 +115,7 @@ async function buildAccountManagement(req, res) {
     nav,
     accountData: res.locals.accountData,
     errors: null,
+    account_email: res.locals.accountData.account_email,
   });
 }
 
@@ -117,4 +125,5 @@ module.exports = {
   registerAccount,
   loginAccount,
   buildAccountManagement,
+  logoutAccount,
 };

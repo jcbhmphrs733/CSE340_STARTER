@@ -4,9 +4,15 @@ const utilities = require("../utilities");
 const router = express.Router();
 const validate = require("../utilities/account-validation");
 
-router.get("/", utilities.handleErrors(accountController.buildAccountManagement));
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildAccountManagement)
+);
 
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
+router.get("/logout", utilities.handleErrors(accountController.logoutAccount));
+
 router.get(
   "/register",
   utilities.handleErrors(accountController.buildRegister)

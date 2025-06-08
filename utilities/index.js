@@ -180,7 +180,7 @@ Util.CheckJWTToken = (req, res, next) => {
           return res.redirect("/account/login");
         }
         res.locals.accountData = accountData;
-        res.locals.loggedIn = 1;
+        res.locals.loggedIn = true;
         next();
       }
     );
@@ -188,5 +188,22 @@ Util.CheckJWTToken = (req, res, next) => {
     next();
   }
 };
+
+
+/* ****************************************
+ * Check Admin Middleware
+ * Checks if the user is an admin
+ **************************************** */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedIn) {
+    next();
+  } else {
+    req.flash("notice", "Please log in to continue.");
+    res.clearCookie("jwt");
+    return res.redirect("/account/login");
+  }
+};
+
+
 
 module.exports = Util;

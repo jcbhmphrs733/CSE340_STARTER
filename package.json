@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "git-update": "git add . && git commit -m \"${pnpm_config_message:-Update}\" && git push"
+    "git-update": "git add . && git commit -m \"${pnpm_config_message:-Update}\" && git push",
+    "debug": "nodemon --inspect server.js"
   },
   "author": "",
   "license": "ISC",

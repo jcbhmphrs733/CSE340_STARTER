@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Account Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 2rem; }
-        .container { max-width: 600px; margin: auto; }
-        h1 { color: #333; }
-        a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to Your Account Management</h1>
-        <p>You are logged in.</p>
-        <p>
-            <a href="/account/edit">Edit Account Details</a>
-        </p>
-    </div>
-</body>
-</html>
+<div class="container">
+  <h1>Welcome to Your Account Management</h1>
+  <p>You are logged in as <%= account_email %></p>
+  <ul></ul>
+    <li>
+      <a href="/account/edit">Edit Account Details</a>
+    </li>
+    <li>
+      <a href="/account/logout">Logout</a>
+    </li>
+  </ul>
+</div>

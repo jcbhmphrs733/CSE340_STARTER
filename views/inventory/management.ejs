@@ -1,5 +1,5 @@
 <h1><%= title %></h1>
-<!-- <img src="/images/site/404.jpg" alt="404 Not Found" style="display:block;margin:2rem auto;"> -->
+<%- messages() %>
 <div class="manage-inventory">
   <ul>
     <li><a href="inv/newClassification">Add New Classification</a></li>
@@ -8,4 +8,20 @@
 </div>
 <p>Manage your inventory by adding new classifications or vehicles.</p>
 <p>Use the links above to navigate to the respective pages.</p>
+
+<h2>Manage inventory</h2>
+<p>Choose a classification to see those inventory items.</p>
+
+<%- classifications %>
+<br>
+<table id="inventoryDisplay"></table>
+<br>
+
+<noscript>
+  JavaScript is required to view the inventory management page.
+</noscript>
+<br>
+
 <a class="hero-btn" href="/">Return Home</a>
+
+<script src="/js/inventory.js"></script>
