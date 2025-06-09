@@ -191,8 +191,8 @@ Util.CheckJWTToken = (req, res, next) => {
 
 
 /* ****************************************
- * Check Admin Middleware
- * Checks if the user is an admin
+ * Check login Middleware
+ * Checks if the user is logged in
  **************************************** */
 Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedIn) {
@@ -204,6 +204,18 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+/* ****************************************
+  * Check Admin and employee authorization Middleware
+  * Checks if the user is an admin or employee
+  **************************************** */
+Util.checkAdmin = (req, res, next) => {
+  if (res.locals.accountData && res.locals.accountData.account_type === "Employee" || res.locals.accountData.account_type === "Admin") {
+    next();
+  } else {
+    req.flash("notice", "You do not have permission to access this page.");
+    return res.redirect("/");
+  }
+};
 
 
 module.exports = Util;

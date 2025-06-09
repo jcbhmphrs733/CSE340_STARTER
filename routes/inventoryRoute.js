@@ -14,29 +14,39 @@ router.get(
 );
 router.get(
   "/getInventory/:classification_id",
+  utilities.checkAdmin,
   utilities.handleErrors(invController.getInventoryJSON)
 );
 router.get(
   "/newClassification",
+  utilities.checkAdmin,
   utilities.handleErrors(invController.buildNewClassification)
 );
 router.get(
   "/newVehicle",
+  utilities.checkAdmin,
   utilities.handleErrors(invController.buildNewVehicle)
 );
 router.post(
   "/newClassification",
+  utilities.checkAdmin,
   utilities.handleErrors(invController.addNewClassification)
 );
-router.post("/newVehicle", utilities.handleErrors(invController.addNewVehicle));
+router.post(
+  "/newVehicle",
+  utilities.checkAdmin,
+  utilities.handleErrors(invController.addNewVehicle)
+);
 router.post(
   "/update",
   utilities.checkLogin,
+  utilities.checkAdmin,
   utilities.handleErrors(invController.updateVehicle)
 );
 router.post(
   "/delete",
   utilities.checkLogin,
+  utilities.checkAdmin,
   utilities.handleErrors(invController.deleteVehicle)
 );
 
@@ -59,11 +69,13 @@ router.get("/detail/:id", utilities.handleErrors(invController.buildDetail));
 router.get(
   "/edit/:inv_id",
   utilities.checkLogin,
+  utilities.checkAdmin,
   utilities.handleErrors(invController.buildEditVehicle)
 );
 router.get(
   "/delete/:inv_id",
   utilities.checkLogin,
+  utilities.checkAdmin,
   utilities.handleErrors(invController.buildDeleteVehicle)
 );
 

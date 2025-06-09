@@ -15,6 +15,10 @@ async function buildLogin(req, res) {
       nav,
       // messages: req.flash("notice"),
       errors: null,
+      loggedIn: res.locals.loggedIn,
+      account_firstname: res.locals.accountData
+        ? res.locals.accountData.account_firstname
+        : " Guest",
     });
   }
 }
@@ -26,6 +30,10 @@ async function buildRegister(req, res) {
     nav,
     // messages: req.flash("notice"),
     errors: null,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -116,6 +124,8 @@ async function buildAccountManagement(req, res) {
     accountData: res.locals.accountData,
     errors: null,
     account_email: res.locals.accountData.account_email,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData.account_firstname,
   });
 }
 

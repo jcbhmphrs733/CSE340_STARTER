@@ -57,7 +57,7 @@ app.use("/account", require("./routes/accountRoute"));
 app.use("/inv", require("./routes/inventoryRoute"));
 
 //Index route
-app.get("/", utilities.handleErrors(baseController.buildHome));
+app.get("/", utilities.CheckJWTToken, utilities.handleErrors(baseController.buildHome));
 app.get("/error", utilities.handleErrors(baseController.throwError));
 
 //last route 404

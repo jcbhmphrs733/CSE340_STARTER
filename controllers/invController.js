@@ -15,6 +15,10 @@ async function buildByClassificationId(req, res, next) {
     title: className + " vehicles",
     nav,
     grid,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -34,6 +38,10 @@ async function buildDetail(req, res, next) {
     nav,
     message: null,
     htmlData,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -49,6 +57,10 @@ async function buildInventoryManagement(req, res) {
     // messages: req.flash("notice"),
     errors: null,
     classifications: classificationSelect,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -62,6 +74,10 @@ async function buildNewClassification(req, res) {
     nav,
     // messages: req.flash("notice"),
     errors: null,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -77,6 +93,10 @@ async function buildNewVehicle(req, res) {
     nav,
     // messages: req.flash("notice"),
     errors: null,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -107,6 +127,10 @@ async function buildEditVehicle(req, res, next) {
     inv_miles: itemData.inv_miles,
     inv_color: itemData.inv_color,
     classification_id: itemData.classification_id,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -134,6 +158,10 @@ async function buildDeleteVehicle(req, res, next) {
     inv_miles: itemData.inv_miles,
     inv_color: itemData.inv_color,
     classification_id: itemData.classification_id,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
   });
 }
 
@@ -165,6 +193,10 @@ async function addNewClassification(req, res) {
       title: "Add New Classification",
       nav,
       errors: null,
+      loggedIn: res.locals.loggedIn,
+      account_firstname: res.locals.accountData
+        ? res.locals.accountData.account_firstname
+        : " Guest",
     });
   }
 }
