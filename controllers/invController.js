@@ -111,6 +111,33 @@ async function buildEditVehicle(req, res, next) {
 }
 
 /* ****************************************
+ * Build vehicle delete view
+ **************************************** */
+async function buildDeleteVehicle(req, res, next) {
+  const inv_id = parseInt(req.params.inv_id);
+  let nav = await utilities.getNav();
+  const itemData = await invModel.getInventoryById(inv_id);
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+  res.render("inventory/delete-inventory", {
+    title: "Delete " + itemName,
+    nav,
+    errors: null,
+    classification_name: itemData.classification_name,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id,
+  });
+}
+
+/* ****************************************
  * Add new classification to the database
  **************************************** */
 
@@ -218,6 +245,42 @@ async function addNewVehicle(req, res) {
   }
 }
 
+/* ****************************************
+ * Delete vehicle from the database
+ **************************************** */
+
+async function deleteVehicle(req, res, next) {
+  const inv_id = parseInt(req.body.inv_id);
+  let nav = await utilities.getNav();
+  const itemData = await invModel.getInventoryById(inv_id);
+  const deleteResult = await invModel.deleteVehicle(inv_id);
+  if (deleteResult) {
+    req.flash(
+      "notice",
+      `${itemData.rows[0].inv_make} ${itemData.rows[0].inv_model} deleted successfully.`
+    );
+    res.status(200).redirect("/inv/");
+  } else {
+    req.flash("notice", "Failed to delete vehicle.");
+    res.status(500).render("inventory/delete-inventory", {
+      title: "Delete " + itemData.inv_make + " " + itemData.inv_model,
+      nav,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_description: itemData.inv_description,
+      inv_image: itemData.inv_image,
+      inv_thumbnail: itemData.inv_thumbnail,
+      inv_price: itemData.inv_price,
+      inv_miles: itemData.inv_miles,
+      inv_color: itemData.inv_color,
+      classification_id: itemData.classification_id,
+    });
+  }
+}
+
 /* ***************************
  *  Return Inventory by Classification As JSON
  * ************************** */
@@ -269,6 +332,9 @@ async function updateVehicle(req, res, next) {
   if (!/^\d+(\.\d{1,2})?$/.test(inv_price)) {
     errors.push("Price must be a valid integer or decimal.");
   }
+  if (!inv_color) {
+    errors.push("Color is required.");
+  }
 
   if (errors.length > 0) {
     req.flash("notice", errors.join(" "));
@@ -305,7 +371,8 @@ async function updateVehicle(req, res, next) {
     classification_id
   );
   if (updateResult) {
-    const itemName = updateResult.rows[0].inv_make + " " + updateResult.rows[0].inv_model;
+    const itemName =
+      updateResult.rows[0].inv_make + " " + updateResult.rows[0].inv_model;
     req.flash("notice", `${itemName} updated successfully.`);
     res.status(200).redirect("/inv/");
   } else {
@@ -341,4 +408,6 @@ module.exports = {
   getInventoryJSON,
   buildEditVehicle,
   updateVehicle,
+  buildDeleteVehicle,
+  deleteVehicle,
 };

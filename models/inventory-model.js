@@ -94,6 +94,9 @@ async function addVehicle(
   }
 }
 
+/* ***************************
+ *  Update vehicle data by inv_id
+ * ***************************/
 async function updateInventory(
   inv_id,
   inv_make,
@@ -129,11 +132,25 @@ async function updateInventory(
   }
 }
 
+/* ***************************
+ * Delete vehicle data by inv_id
+ * ***************************/
+async function deleteVehicle(inv_id) {
+  try {
+    const sql = "DELETE FROM inventory WHERE inv_id = $1 RETURNING *";
+    return await pool.query(sql, [inv_id]);
+  } catch (error) {
+    console.error("Error deleting vehicle:", error);
+    return error.message;
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getInventoryById,
   addClassification,
   addVehicle,
-  updateInventory
+  updateInventory,
+  deleteVehicle
 };
