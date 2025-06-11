@@ -1,9 +1,8 @@
 const pool = require("../database");
 
-
 /* **********************
-  *   Register a new account
-  * ********************* */
+ *   Register a new account
+ * ********************* */
 async function registerAccount(
   account_firstname,
   account_lastname,
@@ -51,11 +50,45 @@ async function getAccountByEmail(account_email) {
     console.error("Error fetching account by email:", error);
     return new Error("No account found with that email");
   }
+}
 
+async function updateAccount(
+  account_firstname,
+  account_lastname,
+  account_email,
+  account_id
+) {
+  try {
+    const sql =
+      "UPDATE account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *";
+    return await pool.query(sql, [
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id,
+    ]);
+  } catch (error) {
+    console.error("Error updating account:", error);
+    return error.message;
+  }
+}
+
+async function getAccountById(account_id) {
+  try {
+    const sql = "SELECT * FROM account WHERE account_id = $1";
+    const result = await pool.query(sql, [account_id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error fetching account by ID:", error);
+    return new Error("No account found with that ID");
+  }
 }
 //// Export the functions for use in other modules
+
 module.exports = {
+  getAccountById,
   registerAccount,
   checkExistingEmail,
-  getAccountByEmail
+  getAccountByEmail,
+  updateAccount,
 };

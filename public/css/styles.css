@@ -43,6 +43,21 @@ header#top-header a {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.delete-btn {
+  background: rgb(121, 5, 5);
+  color: rgb(255, 138, 138);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.delete-btn:hover {
+  background: rgb(255, 138, 138);
+  color: rgb(121, 5, 5);
+}
+
 .siteName {
   font-size: 1.3rem;
   font-weight: bold;

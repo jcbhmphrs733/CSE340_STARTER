@@ -129,6 +129,67 @@ async function buildAccountManagement(req, res) {
   });
 }
 
+async function buildAccountUpdate(req, res) {
+  let nav = await utilities.getNav();
+  if (!res.locals.loggedIn) {
+    req.flash("notice", "Please log in to update your account.");
+    return res.redirect("/account/login");
+  }
+  const accountData = await accountModel.getAccountById(
+    res.locals.accountData.account_id
+  );
+  res.locals.accountData = accountData; // Update the account data in locals
+  res.render("account/account-update", {
+    title: "Update Account",
+    nav,
+    accountData: accountData,
+    errors: null,
+    loggedIn: res.locals.loggedIn,
+    // account_firstname: res.locals.accountData.account_firstname,
+  });
+}
+
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav();
+  if (!res.locals.loggedIn) {
+    req.flash("notice", "Please log in to update your account.");
+    return res.redirect("account/login");
+  }
+  const { account_firstname, account_lastname, account_email, account_id } =
+    req.body;
+  const updatedAccount = await accountModel.updateAccount(
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_id
+  );
+
+  if (updatedAccount) {
+    req.flash("notice", "Account updated successfully.");
+    res.locals.accountData = updatedAccount.rows[0]; // Update the account data in locals
+    return res.render("account/account-management", {
+      title: "Account Management",
+      nav,
+      accountData: updatedAccount.rows[0],
+      errors: null,
+      account_email: updatedAccount.rows[0].account_email,
+      loggedIn: res.locals.loggedIn,
+      account_firstname: updatedAccount.rows[0].account_firstname,
+    });
+  } else {
+    req.flash("notice", "Failed to update account. Please try again.");
+    return res.status(500).render("account/account-update", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      loggedIn: res.locals.loggedIn,
+      account_firstname: res.locals.accountData.account_firstname,
+      account_lastname: res.locals.accountData.account_lastname,
+      account_email: res.locals.accountData.account_email,
+    });
+  }
+}
+
 module.exports = {
   buildLogin,
   buildRegister,
@@ -136,4 +197,6 @@ module.exports = {
   loginAccount,
   buildAccountManagement,
   logoutAccount,
+  buildAccountUpdate,
+  updateAccount,
 };

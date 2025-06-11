@@ -1,0 +1,96 @@
+<h1><%= title %></h1>
+<%- messages() %>
+<div class="content">
+  <h3>Change Personal Info</h3>
+  <form action="/account/account-update" method="post" id="updateAccountForm">
+    <div class="form-group">
+      <label for="account_firstname">First Name:</label>
+      <input
+        id="account_firstname"
+        type="text"
+        name="account_firstname"
+        required
+        value="<%- accountData.account_firstname %>"
+      />
+      <br />
+
+      <label for="account_lastname">Last Name:</label>
+      <input
+        id="account_lastname"
+        type="text"
+        name="account_lastname"
+        required
+        value="<%- accountData.account_lastname %>"
+      />
+      <br />
+
+      <label for="account_email">Email:</label>
+      <input
+        id="account_email"
+        type="email"
+        name="account_email"
+        required
+        value="<%- accountData.account_email %>"
+      />
+      <br />
+
+      <input
+        type="text"
+        name="account_id"
+        value="<%- accountData.account_id %>"
+        hidden
+        readonly
+      />
+
+      <button type="submit">Update Account</button>
+    </div>
+  </form>
+  <br />
+  <h3>Change Password</h3>
+  <form action="/account/change-password" method="post" id="changePasswordForm">
+    <div class="form-group">
+      <label for="current_password">Current Password:</label>
+      <input
+        id="current_password"
+        type="password"
+        name="current_password"
+        required
+      />
+      <br />
+
+      <label for="new_password">New Password:</label>
+      <input id="new_password" type="password" name="new_password" required />
+      <br />
+
+      <label for="confirm_new_password">Confirm New Password:</label>
+      <input
+        id="confirm_new_password"
+        type="password"
+        name="confirm_new_password"
+        required
+      />
+      <br />
+      <input
+        type="text"
+        name="account_id"
+        value="<%- accountData.account_id %>"
+        hidden
+        readonly
+      />
+
+      <button type="submit">Change Password</button>
+    </div>
+  </form>
+  <br />
+  <h3>Delete Account</h3>
+  <form action="/account/delete-account" method="post" id="deleteAccountForm">
+    <input
+      type="text"
+      name="account_id"
+      value="<%- accountData.account_id %>"
+      hidden
+      readonly
+    />
+    <button class="delete-btn" type="submit">Delete Account</button>
+  </form>
+</div>

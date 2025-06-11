@@ -14,6 +14,19 @@ router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get("/logout", utilities.handleErrors(accountController.logoutAccount));
 
 router.get(
+  "/account-update",
+  utilities.checkLogin,
+  utilities.CheckJWTToken,
+  utilities.handleErrors(accountController.buildAccountUpdate)
+)
+router.post(
+  "/account-update",
+  utilities.checkLogin,
+  // validate.checkAccountUpdate,
+  utilities.handleErrors(accountController.updateAccount)
+);
+
+router.get(
   "/register",
   utilities.handleErrors(accountController.buildRegister)
 );

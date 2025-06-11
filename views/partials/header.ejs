@@ -5,8 +5,8 @@
   <div id="tools">
     <% if (loggedIn) { %>
     <a href="/account" title="account-management">
-      Welcome, <%- account_firstname %>! (👉ﾟヮﾟ)👉</a>
-    <a href="/account/logout" title="Logout">Logout</a>
+      Welcome, <%- accountData.account_firstname %>! (👉^o^)👉</a>
+    <button><a href="/account/logout" title="Logout">Logout</a></button>
     <% } else { %>
     <a title="Click to log in" href="/account/login">My Account</a>
     <% } %>

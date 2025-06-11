@@ -28,6 +28,11 @@ app.use(
     name: "sessionId",
   })
 );
+app.use((req, res, next) => {
+  res.locals.loggedIn =
+    typeof res.locals.loggedIn !== "undefined" ? res.locals.loggedIn : false;
+  next();
+});
 
 app.use(require("connect-flash")());
 app.use(function (req, res, next) {
@@ -37,7 +42,6 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 /***********************
  * View Engine and Templates
@@ -57,7 +61,11 @@ app.use("/account", require("./routes/accountRoute"));
 app.use("/inv", require("./routes/inventoryRoute"));
 
 //Index route
-app.get("/", utilities.CheckJWTToken, utilities.handleErrors(baseController.buildHome));
+app.get(
+  "/",
+  utilities.CheckJWTToken,
+  utilities.handleErrors(baseController.buildHome)
+);
 app.get("/error", utilities.handleErrors(baseController.throwError));
 
 //last route 404
