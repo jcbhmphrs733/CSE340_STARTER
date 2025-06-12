@@ -149,6 +149,58 @@ async function buildAccountUpdate(req, res) {
   });
 }
 
+async function changePassword(req, res) {
+  console.log("body:", req.body);
+  let nav = await utilities.getNav();
+  const { new_password, account_id } = req.body;
+
+  try {
+    // if (await bcrypt.compare(account_password, accountData.account_password)) {
+    //   // Password matches, update with new password
+    console.log("new_password:", new_password);
+      const hashedNewPassword = await bcrypt.hash(new_password, 10);
+      const updatedPassword = await accountModel.updatePassword(
+        account_id,
+        hashedNewPassword
+      );
+
+      if (updatedPassword) {
+        req.flash("notice", "Password changed successfully.");
+        return res.redirect("/account");
+      } else {
+        req.flash("notice", "Failed to change password. Please try again.");
+        return res.status(500).render("/account", {
+          title: "Account Management",
+          nav,
+          errors: null,
+          loggedIn: res.locals.loggedIn,
+          account_firstname: accountData.account_firstname,
+        });
+      }
+    // } else {
+    //   req.flash("notice", "Current password is incorrect.");
+    //   return res.status(401).render("account/account-management", {
+    //     title: "Account Management",
+    //     nav,
+    //     errors: null,
+    //     loggedIn: res.locals.loggedIn,
+    //     account_firstname: accountData.account_firstname,
+    //   });
+    // }
+  } catch (error) {
+    console.error("Error changing password:", error);
+    req.flash("notice", "An error occurred while changing the password.");
+    return res.status(500).render("/account", {
+      title: "Account Management",
+      nav,
+      errors: null,
+      loggedIn: res.locals.loggedIn,
+      account_firstname: accountData.account_firstname,
+    });
+  }
+}
+
+
 async function updateAccount(req, res) {
   let nav = await utilities.getNav();
   if (!res.locals.loggedIn) {
@@ -199,4 +251,5 @@ module.exports = {
   logoutAccount,
   buildAccountUpdate,
   updateAccount,
+  changePassword
 };

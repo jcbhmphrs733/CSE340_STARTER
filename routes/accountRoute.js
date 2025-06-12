@@ -26,6 +26,13 @@ router.post(
   utilities.handleErrors(accountController.updateAccount)
 );
 
+router.post(
+  "/change-password",
+  utilities.checkLogin,
+  utilities.handleErrors(
+    accountController.changePassword)
+)
+
 router.get(
   "/register",
   utilities.handleErrors(accountController.buildRegister)

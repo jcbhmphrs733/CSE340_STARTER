@@ -49,27 +49,37 @@
   <h3>Change Password</h3>
   <form action="/account/change-password" method="post" id="changePasswordForm">
     <div class="form-group">
-      <label for="current_password">Current Password:</label>
+      <!-- <label for="current_password">Current Password:</label>
       <input
         id="current_password"
         type="password"
         name="current_password"
         required
       />
-      <br />
-
+      <br /> -->
+      <p>
+        Passwords must be minimum of 12 characters and include 1 capital letter,
+        1 number and 1 special character.
+      </p>
       <label for="new_password">New Password:</label>
-      <input id="new_password" type="password" name="new_password" required />
+      <input
+        type="password"
+        id="password"
+        name="new_password"
+        required
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+      />
       <br />
 
-      <label for="confirm_new_password">Confirm New Password:</label>
+      <!-- <label for="confirm_new_password">Confirm New Password:</label>
       <input
         id="confirm_new_password"
         type="password"
         name="confirm_new_password"
         required
       />
-      <br />
+      <br /> -->
+
       <input
         type="text"
         name="account_id"
@@ -78,11 +88,17 @@
         readonly
       />
 
-      <button type="submit">Change Password</button>
+      <label>
+        <input type="checkbox" id="showPassword" onclick="togglePassword()" />
+        Show password
+      </label>
+      <br />
     </div>
+    <br>
+    <button type="submit">Change Password</button>
   </form>
   <br />
-  <h3>Delete Account</h3>
+  <!-- <h3>Delete Account</h3>
   <form action="/account/delete-account" method="post" id="deleteAccountForm">
     <input
       type="text"
@@ -92,5 +108,13 @@
       readonly
     />
     <button class="delete-btn" type="submit">Delete Account</button>
-  </form>
+  </form> -->
 </div>
+
+<script>
+  function togglePassword() {
+    const pwd = document.getElementById("password");
+    const show = document.getElementById("showPassword").checked;
+    pwd.type = show ? "text" : "password";
+  }
+</script>
