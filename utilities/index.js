@@ -97,9 +97,26 @@ Util.buildClassificationGrid = async function (data) {
 /* ****************************************
  * Build the vehicle detail HTML
  * Assignment 3, Task 1
- **************************************** */
-Util.buildSingleVehicleDisplay = async (vehicle) => {
+ **************************************** */Util.buildSingleVehicleDisplay = async (vehicle, showFavorite, accountId) => {
   let v_detail_string = '<div id="vehicle-display">';
+  let isFavorite = false;
+  if (showFavorite) {
+    isFavorite = await invModel.isFavorite(
+      accountId,
+      vehicle.inv_id);
+
+    v_detail_string += `
+    <div class="favorite-toggle">
+      <input type="checkbox" id="favorite" name="favorite" ${
+        isFavorite ? "checked" : ""
+      }>
+      <label for="favorite">Favorite</label>
+    </div>
+    `;
+    console.log("isFavorite: ", isFavorite);
+  }
+  // v_detail_string += `<h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>`;
+
   v_detail_string += "<div>";
   v_detail_string += '<div class="vehicleImage">';
   v_detail_string +=
@@ -189,7 +206,6 @@ Util.CheckJWTToken = (req, res, next) => {
   }
 };
 
-
 /* ****************************************
  * Check login Middleware
  * Checks if the user is logged in
@@ -205,17 +221,20 @@ Util.checkLogin = (req, res, next) => {
 };
 
 /* ****************************************
-  * Check Admin and employee authorization Middleware
-  * Checks if the user is an admin or employee
-  **************************************** */
+ * Check Admin and employee authorization Middleware
+ * Checks if the user is an admin or employee
+ **************************************** */
 Util.checkAdmin = (req, res, next) => {
-  if (res.locals.accountData && res.locals.accountData.account_type === "Employee" || res.locals.accountData.account_type === "Admin") {
+  if (
+    (res.locals.accountData &&
+      res.locals.accountData.account_type === "Employee") ||
+    res.locals.accountData.account_type === "Admin"
+  ) {
     next();
   } else {
     req.flash("notice", "You do not have permission to access this page.");
     return res.redirect("/");
   }
 };
-
 
 module.exports = Util;

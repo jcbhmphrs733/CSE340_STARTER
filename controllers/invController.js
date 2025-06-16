@@ -24,12 +24,18 @@ async function buildByClassificationId(req, res, next) {
 
 /* ***************************
  *  Build vehicle detail view
- *  Assignment 3, Task 1
  * ************************** */
 async function buildDetail(req, res, next) {
   const invId = req.params.id;
   let vehicle = await invModel.getInventoryById(invId);
-  const htmlData = await utilities.buildSingleVehicleDisplay(vehicle);
+  let showFavorite = false; 
+  if (res.locals.accountData && res.locals.accountData.account_id) {showFavorite = true;}
+   
+  const htmlData = await utilities.buildSingleVehicleDisplay(
+    vehicle,
+    showFavorite,
+    res.locals.accountData.account_id
+  );
   let nav = await utilities.getNav();
   const vehicleTitle =
     vehicle.inv_year + " " + vehicle.inv_make + " " + vehicle.inv_model;
@@ -42,6 +48,7 @@ async function buildDetail(req, res, next) {
     account_firstname: res.locals.accountData
       ? res.locals.accountData.account_firstname
       : " Guest",
+    vehicle: invId,
   });
 }
 
@@ -62,6 +69,53 @@ async function buildInventoryManagement(req, res) {
       ? res.locals.accountData.account_firstname
       : " Guest",
   });
+}
+
+/* ****************************************
+ * Build inventory management view
+ **************************************** */
+async function buildFavorites(req, res) {
+  const user_id = res.locals.accountData.account_id;
+  const data = await invModel.getUserFavorites(user_id);
+  const grid = await utilities.buildClassificationGrid(data);
+  let nav = await utilities.getNav();
+  res.render("./inventory/classification", {
+    title: "Favorite vehicles",
+    nav,
+    grid,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
+  });
+}
+
+// Add favorite
+async function addFavorite(req, res) {
+  try {
+    const account_id =
+      req.session.account_id || res.locals.accountData.account_id;
+    const { inv_id } = req.body;
+    if (!account_id) return res.status(401).json({ error: "Not logged in" });
+    await invModel.addFavorite(account_id, parseInt(inv_id));
+    res.status(200).json({ message: "Favorited" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add favorite" });
+  }
+}
+
+// Remove favorite
+async function removeFavorite(req, res) {
+  try {
+    const account_id =
+      req.session.account_id || res.locals.accountData.account_id;
+    const { inv_id } = req.body;
+    if (!account_id) return res.status(401).json({ error: "Not logged in" });
+    await invModel.removeFavorite(account_id, parseInt(inv_id));
+    res.status(200).json({ message: "Unfavorited" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to remove favorite" });
+  }
 }
 
 /* ****************************************
@@ -442,4 +496,7 @@ module.exports = {
   updateVehicle,
   buildDeleteVehicle,
   deleteVehicle,
+  buildFavorites,
+  addFavorite,
+  removeFavorite,
 };

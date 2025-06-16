@@ -12,6 +12,7 @@ router.get(
   utilities.checkLogin,
   utilities.handleErrors(invController.buildInventoryManagement)
 );
+router.get("/favorites", utilities.checkLogin, utilities.handleErrors(invController.buildFavorites));
 router.get(
   "/getInventory/:classification_id",
   utilities.checkAdmin,
@@ -78,5 +79,10 @@ router.get(
   utilities.checkAdmin,
   utilities.handleErrors(invController.buildDeleteVehicle)
 );
+
+
+router.post("/favorites", utilities.checkLogin, utilities.handleErrors(invController.addFavorite));
+router.delete("/favorites", utilities.checkLogin, utilities.handleErrors(invController.removeFavorite));
+
 
 module.exports = router;

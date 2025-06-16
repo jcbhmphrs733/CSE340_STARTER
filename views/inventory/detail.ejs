@@ -1,17 +1,54 @@
-<%# Unit 3, Assignment 3, Task 1 %>
-<% if (title) { %>
+<%# Unit 3, Assignment 3, Task 1 %> <% if (title) { %>
 <h1><%= title %></h1>
-<% } else {
-  res.redirect('/')
-} %>
-
-<%# // See https://attacomsian.com/blog/check-if-javascript-object-is-empty %>
-
-<% if(Object.entries(htmlData).length > 0){ %>
-
-<%- htmlData %>
-<% } else { %>
+<!-- <h3><%= vehicle %></h3> -->
+<% } else { res.redirect('/') } %> <%# // See
+https://attacomsian.com/blog/check-if-javascript-object-is-empty %> <%
+if(Object.entries(htmlData).length > 0){ %> <%- htmlData %> <% } else { %>
 <p class="message">Sorry, no matching vehicle could be found.</p>
 <% } %>
 
-<!-- <script src="/js/script.js"></script> -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOM fully loaded and parsed");
+    const favoriteCheckbox = document.getElementById("favorite");
+    if (favoriteCheckbox) {
+      favoriteCheckbox.addEventListener("change", async function () {
+        const vehicleId = "<%= vehicle %>";
+
+        if (favoriteCheckbox.checked) {
+          // Add to favorites
+          try {
+            const response = await fetch("/inv/favorites", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ inv_id: vehicleId }),
+            });
+            if (response.ok) {
+              console.log("Favorited!");
+            } else {
+              console.error("Failed to add favorite");
+            }
+          } catch (err) {
+            console.error("Error adding favorite:", err);
+          }
+        } else {
+          // Remove from favorites
+          try {
+            const response = await fetch("/inv/favorites", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ inv_id: vehicleId }),
+            });
+            if (response.ok) {
+              console.log("Unfavorited!");
+            } else {
+              console.error("Failed to remove favorite");
+            }
+          } catch (err) {
+            console.error("Error removing favorite:", err);
+          }
+        }
+      });
+    }
+  });
+</script>

@@ -27,6 +27,62 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+// Add a favorite
+async function addFavorite(account_id, inv_id) {
+  try {
+    const sql = `INSERT INTO favorites (account_id, inv_id) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *`;
+    const result = await pool.query(sql, [account_id, inv_id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("addFavorite error", error);
+    throw error;
+  }
+}
+
+// Remove a favorite
+async function removeFavorite(account_id, inv_id) {
+  try {
+    const sql = `DELETE FROM favorites WHERE account_id = $1 AND inv_id = $2 RETURNING *`;
+    const result = await pool.query(sql, [account_id, inv_id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("removeFavorite error", error);
+    throw error;
+  }
+}
+
+/* ***************************
+* get user favorite vehicles
+* ************************** */
+async function getUserFavorites(userId) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.favorites AS i 
+      WHERE f.user_id = $1`,
+      [userId]
+    );
+    return data.rows;
+  } catch (error) {
+    console.error("getUserFavorites error " + error);
+  }
+}
+
+/* ***************************
+*Determine if a vehicle is a favorite
+* ************************** */
+async function isFavorite(userId, invId) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.favorites AS f 
+      WHERE f.account_id = $1 AND f.inv_id = $2`,
+      [userId, invId]
+    );
+    return data.rows.length > 0;
+  } catch (error) {
+    console.error("isFavorite error " + error);
+  }
+}
+
 /* ***************************
  *  Get inventory and classification data by inv_id
  *  Assignment 3, Task 1
@@ -152,5 +208,9 @@ module.exports = {
   addClassification,
   addVehicle,
   updateInventory,
-  deleteVehicle
+  deleteVehicle,
+  addFavorite,
+  removeFavorite,
+  getUserFavorites,
+  isFavorite
 };
