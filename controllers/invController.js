@@ -1,4 +1,3 @@
-const e = require("connect-flash");
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities/");
 
@@ -22,6 +21,25 @@ async function buildByClassificationId(req, res, next) {
   });
 }
 
+/* ****************************************
+ * Build inventory management view
+ **************************************** */
+async function buildFavorites(req, res) {
+  const user_id = res.locals.accountData.account_id;
+  const data = await invModel.getUserFavorites(user_id);
+  const grid = await utilities.buildClassificationGrid(data);
+  let nav = await utilities.getNav();
+  res.render("./inventory/classification", {
+    title: "Favorite vehicles",
+    nav,
+    grid,
+    loggedIn: res.locals.loggedIn,
+    account_firstname: res.locals.accountData
+      ? res.locals.accountData.account_firstname
+      : " Guest",
+  });
+}
+
 /* ***************************
  *  Build vehicle detail view
  * ************************** */
@@ -30,11 +48,12 @@ async function buildDetail(req, res, next) {
   let vehicle = await invModel.getInventoryById(invId);
   let showFavorite = false; 
   if (res.locals.accountData && res.locals.accountData.account_id) {showFavorite = true;}
-   
+  
+  const accountId = res.locals.accountData ? res.locals.accountData.account_id : null;
   const htmlData = await utilities.buildSingleVehicleDisplay(
     vehicle,
     showFavorite,
-    res.locals.accountData.account_id
+    accountId
   );
   let nav = await utilities.getNav();
   const vehicleTitle =
@@ -64,25 +83,6 @@ async function buildInventoryManagement(req, res) {
     // messages: req.flash("notice"),
     errors: null,
     classifications: classificationSelect,
-    loggedIn: res.locals.loggedIn,
-    account_firstname: res.locals.accountData
-      ? res.locals.accountData.account_firstname
-      : " Guest",
-  });
-}
-
-/* ****************************************
- * Build inventory management view
- **************************************** */
-async function buildFavorites(req, res) {
-  const user_id = res.locals.accountData.account_id;
-  const data = await invModel.getUserFavorites(user_id);
-  const grid = await utilities.buildClassificationGrid(data);
-  let nav = await utilities.getNav();
-  res.render("./inventory/classification", {
-    title: "Favorite vehicles",
-    nav,
-    grid,
     loggedIn: res.locals.loggedIn,
     account_firstname: res.locals.accountData
       ? res.locals.accountData.account_firstname

@@ -52,13 +52,14 @@ async function removeFavorite(account_id, inv_id) {
 }
 
 /* ***************************
-* get user favorite vehicles
-* ************************** */
+ * get user favorite vehicles
+ * ************************** */
 async function getUserFavorites(userId) {
   try {
     const data = await pool.query(
-      `SELECT * FROM public.favorites AS i 
-      WHERE f.user_id = $1`,
+      `SELECT * FROM public.inventory AS i
+      JOIN public.favorites AS f ON i.inv_id = f.inv_id 
+      WHERE account_id = $1;`,
       [userId]
     );
     return data.rows;
@@ -68,13 +69,13 @@ async function getUserFavorites(userId) {
 }
 
 /* ***************************
-*Determine if a vehicle is a favorite
-* ************************** */
+ *Determine if a vehicle is a favorite
+ * ************************** */
 async function isFavorite(userId, invId) {
   try {
     const data = await pool.query(
-      `SELECT * FROM public.favorites AS f 
-      WHERE f.account_id = $1 AND f.inv_id = $2`,
+      `SELECT * FROM public.favorites 
+      WHERE account_id = $1 AND inv_id = $2`,
       [userId, invId]
     );
     return data.rows.length > 0;
@@ -212,5 +213,5 @@ module.exports = {
   addFavorite,
   removeFavorite,
   getUserFavorites,
-  isFavorite
+  isFavorite,
 };

@@ -37,11 +37,12 @@ Util.getNav = async function (req, res, next) {
  * Build the classification view HTML
  * ************************************ */
 
-Util.buildClassificationGrid = async function (data) {
-  let grid;
-
-  if (data.length > 0) {
-    grid = '<ul id="inv-display">';
+ Util.buildClassificationGrid = async function (data) {
+  console.log("data: ", data);
+  if (!Array.isArray(data) || data.length === 0) {
+    return '<p class="notice">No vehicles found.</p>';
+  } else {
+    let grid = '<ul id="inv-display">';
     data.forEach((vehicle) => {
       grid += "<li>";
 
@@ -52,7 +53,7 @@ Util.buildClassificationGrid = async function (data) {
         vehicle.inv_make +
         " " +
         vehicle.inv_model +
-        'details"><img src="' +
+        ' details"><img src="' +
         vehicle.inv_thumbnail +
         '" alt="Image of ' +
         vehicle.inv_make +
@@ -88,22 +89,19 @@ Util.buildClassificationGrid = async function (data) {
     });
 
     grid += "</ul>";
-  } else {
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+    return grid;
   }
-  return grid;
 };
 
 /* ****************************************
  * Build the vehicle detail HTML
  * Assignment 3, Task 1
- **************************************** */Util.buildSingleVehicleDisplay = async (vehicle, showFavorite, accountId) => {
+ **************************************** */
+Util.buildSingleVehicleDisplay = async (vehicle, showFavorite, accountId) => {
   let v_detail_string = '<div id="vehicle-display">';
   let isFavorite = false;
   if (showFavorite) {
-    isFavorite = await invModel.isFavorite(
-      accountId,
-      vehicle.inv_id);
+    isFavorite = await invModel.isFavorite(accountId, vehicle.inv_id);
 
     v_detail_string += `
     <div class="favorite-toggle">
