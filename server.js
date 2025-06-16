@@ -97,7 +97,7 @@ app.use(async (err, req, res, next) => {
  * Values from .env (environment) file
  *************************/
 const port = process.env.PORT;
-const host = process.env.HOST;
+const host = "0.0.0.0";
 
 /* ***********************
  * Log statement to confirm server operation
